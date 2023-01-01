@@ -1,0 +1,87 @@
+[gd_scene load_steps=8 format=3 uid="uid://bevg132np7hbs"]
+
+[ext_resource type="Texture2D" uid="uid://b3nvp4wlpm5ws" path="res://simple_platformer.png" id="1_lmnl4"]
+[ext_resource type="Script" path="res://player.cs" id="1_o1cx5"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jvs5u"]
+radius = 16.0
+height = 54.0
+
+[sub_resource type="Animation" id="Animation_oxgl8"]
+resource_name = "idle"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Rect2(0, 0, 64, 64), Rect2(64, 0, 64, 64), Rect2(128, 0, 64, 64)]
+}
+
+[sub_resource type="Animation" id="Animation_ksvsm"]
+resource_name = "jump"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(0, 64, 64, 64)]
+}
+
+[sub_resource type="Animation" id="Animation_eew2r"]
+resource_name = "run"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Rect2(0, 64, 64, 64), Rect2(0, 0, 64, 64)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pp73y"]
+_data = {
+"idle": SubResource("Animation_oxgl8"),
+"jump": SubResource("Animation_ksvsm"),
+"run": SubResource("Animation_eew2r")
+}
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_o1cx5")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_lmnl4")
+region_enabled = true
+region_rect = Rect2(64, 0, 64, 64)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_jvs5u")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "idle"
+libraries = {
+"": SubResource("AnimationLibrary_pp73y")
+}
+
+[node name="Camera2D" type="Camera2D" parent="."]
+offset = Vector2(0, -300)
+current = true
